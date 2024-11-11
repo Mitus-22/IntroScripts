@@ -1,8 +1,14 @@
+
 using UnityEngine;
-using UnityEngine.InputSystem;
+
+using UnityEngine.SceneManagement;
 
 public class Movimiento : MonoBehaviour
 {
+    int contador = 0;
+
+    public GameObject itemFinal;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -12,7 +18,7 @@ public class Movimiento : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // Moverse
         if (Input.GetKey(KeyCode.W)){
             transform.Translate(Vector3.forward * Time.deltaTime * 10);
         }
@@ -26,12 +32,31 @@ public class Movimiento : MonoBehaviour
             transform.Translate(Vector3.left * Time.deltaTime * 10);
         }
 
-    }
+        // Salir del juego
+        if (Input.GetKey(KeyCode.Escape)){
+            Application.Quit();
+        }
 
+    }
+    // Eliminar objetos al tocarlos
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Item") {
             Destroy(other.gameObject);
+            contador++;
+            if (contador == 10) {
+                itemFinal.SetActive(true);
+            }
         }
+
+        if (other.gameObject.tag == "Finish") {
+            Destroy(other.gameObject);
+            SceneManager.LoadScene("SampleScene");
+
+        }
+
+    
     }
+
+
 
 }
